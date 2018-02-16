@@ -1,0 +1,11 @@
+# Docker compose file for starting up the project in Development mode.
+version: '2'
+services:
+  application:
+    build:
+      context: .
+      dockerfile: development.Dockerfile
+    volumes:
+      - ./:/application/code
+    ports:
+      - "8080:8080"

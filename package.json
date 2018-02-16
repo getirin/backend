@@ -1,0 +1,52 @@
+{
+  "name": "backend-boilerplate",
+  "version": "0.0.1",
+  "description": "Backend boilerplate to be used in hackathons. With static documentation generation, mockup endpoints, configuration.",
+  "main": "bin/index.js",
+  "repository": "https://github.com/Yengas/backend-boilerplate.git",
+  "author": "Yiğitcan UÇUM <yigitcan@hotmail.com.tr>",
+  "license": "MIT",
+  "engines": {
+    "node": "8.9.4"
+  },
+  "scripts": {
+    "start": "node bin/index.js",
+    "serve:mock": "node bin/mock-api.js",
+    "test": "NODE_ENV=test jest --forceExit --verbose",
+    "test:unit": "npm test -- __tests__/unit",
+    "test:integration": "npm test -- __tests__/integration",
+    "lint": "eslint src bin __mocks__ __tests__",
+    "lint:app": "eslint src bin",
+    "lint:mocks": "eslint __mocks__",
+    "lint:tests": "eslint __tests__",
+    "swagger-generate": "node bin/swagger-generate.js"
+  },
+  "dependencies": {
+    "boom": "^7.1.1",
+    "dotenv": "^5.0.0",
+    "hapi": "^17.2.0",
+    "hapi-auth-jwt2": "salzhrani/hapi-auth-jwt2#v-17",
+    "hapi-swagger": "^9.0.2",
+    "inert": "^5.1.0",
+    "joi": "^13.1.2",
+    "jsonwebtoken": "^8.1.1",
+    "pino": "^4.10.4",
+    "vision": "^5.3.1"
+  },
+  "devDependencies": {
+    "eslint": "^4.17.0",
+    "eslint-config-standard": "^11.0.0-beta.0",
+    "eslint-plugin-import": "^2.8.0",
+    "eslint-plugin-node": "^6.0.0",
+    "eslint-plugin-promise": "^3.6.0",
+    "eslint-plugin-standard": "^3.0.1",
+    "felicity": "^2.4.5",
+    "jest": "^22.3.0"
+  },
+  "jest": {
+    "testPathIgnorePatterns": [
+      "__tests__/helper.js",
+      "node_modules"
+    ]
+  }
+}

@@ -1,0 +1,10 @@
+node_modules
+.git
+converage/
+
+.dockerignore
+Dockerfile
+
+.eslintrc
+.example.env
+__mocks__
