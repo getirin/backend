@@ -1,16 +1,20 @@
 <div align="center>
     <img src="https://github.com/hapijs/hapi/raw/65944e55ea35189c68b2a5bd9f8cc039e5147961/images/17.png" alt="HapiJS Backend Boilerplate">
-    <h1>HapiJS Backend Boilerplate</h1>
+    <h1>Getir.in Backend</h1>
 </div>
 
-This is a backend boilerplate project that uses latest ES6 features and HapiJS v17. Its very opinionated and suits to my own tastes. It aims to create ease of development with features such as auto documentation of REST endpoints, generating random data for mock apis, Dockerfiles.
+This is the backend of the [getir.in](https://github.com/getirin) project, done in [Semih Öztürk Hackathon 2018](http://hackathon.getir.com). It uses the [yengas/backend-boilerplate](https://github.com/Yengas/backend-boilerplate) as the initial commit. 
 
 --------------------
 
 [![Deploy](https://www.herokucdn.com/deploy/button.svg)](https://heroku.com/deploy?template=https://github.com/yengas/backend-boilerplate)
 [![Documentation](	https://img.shields.io/swagger/valid/2.0/https/yengas-boilerplate.herokuapp.com/swagger.json.svg)](https://yengas-boilerplate.herokuapp.com/documentation)
 
-Table of contents
+# Features
+
+Whole projects features compatibility with Docker, Heroku for deployment, Swagger for Documentation, Unit and Integration tests with Jest, Logging with Pino, Linting according to custom taste extended over standardjs. As the backend framework of choice, HapiJS v17 is used. It features async rest endpoint handlers, auto documentation generation for routes, Schema validation with Joi.
+
+Table of contents (WIP)
 =================
 
 <!--ts-->
