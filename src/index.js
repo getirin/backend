@@ -1,6 +1,7 @@
 const Hapi = require('hapi');
 const config = require('./config');
 const log = require('./log')(config.logging);
+const { connectDatabase } = require('./configureDatabase');
 const { registerProductionPlugins } = require('./configureServer');
 const { createJWTInstance } = require('./auth');
 
@@ -11,6 +12,7 @@ const { createJWTInstance } = require('./auth');
   const routes = require('./routes')({ controllers, routeConfigOverrides: { tags: ['api'] } });
   const server = Hapi.server({ port: config.port });
 
+  await connectDatabase(config.database);
   await registerProductionPlugins(server, config);
   await server.route(routes);
   await server.start();

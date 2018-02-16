@@ -17,5 +17,8 @@ module.exports = {
       key: process.env.JWT_KEY || 'nonSecure',
       algorithm: process.env.JWT_ALGORITHM || 'HS256',
     },
+  },
+  database: {
+    connectionString: process.env.MONGODB_CONNECTION_STRING || 'mongodb://localhost/getirin',
   }
 };
