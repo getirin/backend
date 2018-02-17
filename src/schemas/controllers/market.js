@@ -1,7 +1,7 @@
 const Joi = require('joi');
 const MarketJoiSchema = require('../models/Market');
 const { putRequestSuccess, geoPoint } = require('./common');
-const MarketJoiSchemaWithId= MarketJoiSchema.keys({
+const MarketJoiSchemaWithId = MarketJoiSchema.keys({
   id: Joi.string().required(),
 }).optional();
 

@@ -1,6 +1,6 @@
 const Market = require('../models/Market');
 const { indexPutResponse, indexPutRequest, nearbyPostRequest, nearbyPostResponse } = require('../schemas/controllers/market');
-const mapInsertForPutOutput  = require('./common/mapInsertForPutOutput');
+const mapInsertForPutOutput = require('./common/mapInsertForPutOutput');
 
 function mapMarketForOutput({ _id, location, name }){
   return { id: _id.toString(), location, name };
@@ -26,7 +26,7 @@ module.exports = ({ log }) => {
         response: { schema: nearbyPostResponse },
         description: 'lists the nearby markets to the given point.'
       },
-      handler: async function({ payload: { location, maxDistance, minDistance }}){
+      handler: async function({ payload: { location, maxDistance, minDistance } }){
         const result = await Market.nearbyOfLocation(location, maxDistance, minDistance);
 
         return result.map(mapMarketForOutput);
