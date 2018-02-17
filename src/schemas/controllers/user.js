@@ -1,6 +1,10 @@
-const { loginRequest, loginSuccess } = require('./common');
+const { loginRequest, loginSuccess, putRequestSuccess, geoPoint } = require('./common');
 
 module.exports = {
   loginGetRequestPayload: loginRequest,
-  loginGetSuccess: loginSuccess
+  loginGetSuccess: loginSuccess,
+  lastSeenPostRequest: {
+    location: geoPoint.required(),
+  },
+  lastSeenPostResponse: putRequestSuccess
 };

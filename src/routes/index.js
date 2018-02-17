@@ -13,9 +13,22 @@ module.exports = ({ controllers, routeDefinitionOverrides = {}, routeConfigOverr
       method: 'POST',
       path: '/user/login'
     }),
+    createRouteForController(user.lastSeenPost, {
+      method: 'POST',
+      path: '/user/lastSeen'
+    }),
     createRouteForController(carrier.loginPost, {
       method: 'POST',
       path: '/carrier/login'
+    }),
+    // Re-use the userLastSeen since they derive from the same model.
+    createRouteForController(user.lastSeenPost, {
+      method: 'POST',
+      path: '/carrier/lastSeen'
+    }),
+    createRouteForController(carrier.nearbyPost, {
+      method: 'POST',
+      path: '/carrier/nearby'
     }),
     createRouteForController(product.indexGet, {
       method: 'GET',
