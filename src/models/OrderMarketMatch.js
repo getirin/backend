@@ -36,7 +36,7 @@ const defaultMatcherOptions = {
  * @param maxDistance
  * @return {Promise<mongoose.Schema.methods>}
  */
-orderMarketMatchSchema.methods.createMarketMatchForOrder = async function(order, Market, { maxDistance } = defaultMatcherOptions){
+orderMarketMatchSchema.statics.createMarketMatchForOrder = async function(order, Market, { maxDistance } = defaultMatcherOptions){
   const markets = await Market.nearbyOfLocation(order.destination, maxDistance);
 
   return new this({

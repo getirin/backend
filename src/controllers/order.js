@@ -2,6 +2,8 @@ const { indexPutRequest, indexPutResponse, listPostResponse } = require('../sche
 const mapInsertForPutOutput = require('./common/mapInsertForPutOutput');
 const { mongoToObject, objectToMongo } = require('./common/convertLatLngToMongoArray');
 const Order = require('../models/Order');
+const Market = require('../models/Market');
+const OrderMarketMatch = require('../models/OrderMarketMatch');
 
 function mapOrderForOutput(payload){
   const { title, totalPrice, address, status, createdAt, updatedAt } = payload;
@@ -29,9 +31,18 @@ module.exports = ({ log }) => {
       },
       handler: async function({ auth, payload }){
         const { id: user } = auth.credentials;
-        const result = await new Order({ ...payload, destination: objectToMongo(payload.destination), user }).save();
+        const order = await new Order({ ...payload, destination: objectToMongo(payload.destination), user }).save();
+        log.info({ insertId: order._id, destination: payload.destination }, 'Inserted order without any problems, trying to calculate the nearest markets.');
+        // TODO: move this out of this service.
+        const orderMarketMatch = await OrderMarketMatch.createMarketMatchForOrder(order, Market);
+        const ommSaveResult = await orderMarketMatch.save();
 
-        return mapInsertForPutOutput(result);
+        log.info(
+          { insertId: ommSaveResult._id, closeMarkets: ommSaveResult.closeMarkets.map(m => m && m.name) },
+          'Created order market match for our new order.'
+        );
+
+        return mapInsertForPutOutput(order);
       }
     },
     listPost: {
@@ -44,7 +55,6 @@ module.exports = ({ log }) => {
         const { id: user } = auth.credentials;
         const result = await Order.listUserOrders(user);
 
-        console.log(JSON.stringify(result.map(mapOrderForOutput)));
         return result.map(mapOrderForOutput);
       }
     }
