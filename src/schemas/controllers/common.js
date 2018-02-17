@@ -15,7 +15,10 @@ const putRequestSuccess = Joi.object().keys({
 
 const loginRequest = pickJoiObj(User, ['name', 'password']);
 
-const geoPoint = Joi.array().items(Joi.number()).length(2);
+const geoPoint = Joi.object().keys({
+  lat: Joi.number().required(),
+  lng: Joi.number().required(),
+});
 
 module.exports = {
   loginRequest,

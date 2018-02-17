@@ -1,6 +1,7 @@
 const Joi = require('joi');
+const { geoPoint } = require('../controllers/common');
 
 module.exports = Joi.object().keys({
   name: Joi.string().min(3).required(),
-  location: Joi.array().items(Joi.number()).length(2).required()
+  location: geoPoint.required(),
 }).required();
