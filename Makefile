@@ -5,6 +5,9 @@ VERSION=0.0.1
 HOST_PORT=8080
 CONTAINER_PORT=8080
 DEV_SCRIPT_CONTAINER_NAME=boilerplate_run_dev_script
+INTEGRATION_TEST_CONTAINER_NAME=boilerplate_run_test_integration
+TEST_MONGODB_VERSION=3.6.2
+TEST_MONGODB_NAME=boilerplate_test_mongodb
 
 .PHONY: help
 
@@ -34,6 +37,14 @@ rm-dev-script-container: ## Removes the run-script container from the docker
 	-@docker rm  $(DEV_SCRIPT_CONTAINER_NAME) || true
 run-test: rm-dev-script-container ## Run all tests with run-dev-script
 	@make ARGS="npm test" run-dev-script
+run-test-integration: # Run the integration tests by starting a mongodb database.
+	-docker rm -f $(TEST_MONGODB_NAME) $(INTEGRATION_TEST_CONTAINER_NAME)
+	docker run --name $(TEST_MONGODB_NAME) -d mongo:$(TEST_MONGODB_VERSION)
+	docker run -it --rm --link $(TEST_MONGODB_NAME):database waisbrot/wait:latest
+	export TEST_MONGODB_CONNECTION_STRING=mongodb://database/getirin-test
+	-docker run -it \
+		--name $(INTEGRATION_TEST_CONTAINER_NAME) -v ${CURDIR}:/application/code -w "/application/code" \
+		--link $(TEST_MONGODB_NAME):database $(NAME)$(DEV_SUFFIX):$(VERSION) npm run test:integration
 run-lint: rm-dev-script-container ## Run lint with run-dev-script
 	@make ARGS="npm run lint" run-dev-script
 run-swagger-generate: rm-dev-script-container ## Creates and puts a swagger.json to the root of the project.

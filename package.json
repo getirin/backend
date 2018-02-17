@@ -12,9 +12,9 @@
   "scripts": {
     "start": "node bin/index.js",
     "serve:mock": "node bin/mock-api.js",
-    "test": "NODE_ENV=test jest --forceExit --verbose",
-    "test:unit": "npm test -- __tests__/unit",
-    "test:integration": "npm test -- __tests__/integration",
+    "test": "NODE_ENV=test jest --forceExit --verbose __tests__/unit",
+    "test:unit": "npm test",
+    "test:integration": "NODE_ENV=test jest --forceExit --verbose __tests__/integration",
     "lint": "eslint src bin __mocks__ __tests__",
     "lint:app": "eslint src bin",
     "lint:mocks": "eslint __mocks__",
