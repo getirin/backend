@@ -50,6 +50,10 @@ module.exports = ({ controllers, routeDefinitionOverrides = {}, routeConfigOverr
       method: 'PUT',
       path: '/order',
     }),
+    createRouteForController(order.idDelete, {
+      method: 'DELETE',
+      path: '/order/{id}',
+    }),
     createRouteForController(order.listGet, {
       method: 'GET',
       path: '/order/list',

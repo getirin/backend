@@ -11,6 +11,10 @@ const putRequestSuccess = Joi.object().keys({
   createdAt: Joi.date().timestamp(),
 });
 
+const cancelSuccessResponse = Joi.object().keys({
+  success: Joi.valid(true).required()
+});
+
 const loginRequest = Joi.object().keys({
   name: Joi.string().required(),
   password: Joi.string().required(),
@@ -25,5 +29,6 @@ module.exports = {
   loginRequest,
   loginSuccess,
   putRequestSuccess,
-  geoPoint
+  geoPoint,
+  cancelSuccessResponse
 };

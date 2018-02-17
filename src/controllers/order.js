@@ -1,11 +1,14 @@
-const Joi = require('joi');
-const { indexPutRequest, indexPutResponse, listGetResponse } = require('../schemas/controllers/order');
+const Boom = require('boom');
+const { indexPutRequest, indexPutResponse, listGetResponse, idDeleteParams, idDeleteResponse } = require('../schemas/controllers/order');
+const errorCodes = require('../resources/error-codes');
+const { userTypes, orderStatuses, carrierRequestStatuses } = require('../resources/model-constants');
 const mapInsertForPutOutput = require('./common/mapInsertForPutOutput');
 const { mongoToObject, objectToMongo } = require('./common/convertLatLngToMongoArray');
 const Order = require('../models/Order');
 const Product = require('../models/Product');
 const Market = require('../models/Market');
 const OrderMarketMatch = require('../models/OrderMarketMatch');
+const CarrierRequest = require('../models/CarrierRequest');
 
 function mapOrderForOutput(payload){
   const { title, totalPrice, address, status, createdAt, updatedAt } = payload;
@@ -59,6 +62,47 @@ module.exports = ({ log }) => {
         const result = await Order.listUserOrders(user);
 
         return result.map(mapOrderForOutput);
+      }
+    },
+    idDelete: {
+      config: {
+        validate: { params: idDeleteParams },
+        response: { schema: idDeleteResponse },
+        auth: 'jwt',
+      },
+      handler: async function({ auth: { credentials: { id: userID, userType } }, params: { id: orderID } }){
+        if(userType !== userTypes.CUSTOMER) return Boom.unauthorized(errorCodes.onlyCustomersCanCancelOrders);
+        const order = await Order.findById(orderID).catch(() => Promise.resolve());
+        if(!order || order.user.toString() !== userID) return Boom.notFound();
+        if(order.status === orderStatuses.FINISHED) return Boom.badRequest(errorCodes.canNotCancelFinishedOrders);
+        if(order.status === orderStatuses.CANCELED_BY_USER) return Boom.badRequest(errorCodes.orderAlreadyCancelled);
+
+        // If the order is already obtained, we need to cascade the status to carrier
+        if(order.status === orderStatuses.OBTAINED){
+          const carrierRequestQuery = {
+            order: order.id,
+            status: { $in: [ carrierRequestStatuses.WAITING, carrierRequestStatuses.OBTAINED ] }
+          };
+
+          // find carriers that got effected by this.
+          const requests = await CarrierRequest.find(carrierRequestQuery).select('carrier');
+          const carriers = requests.map(request => request.carrier);
+
+          await CarrierRequest.update(
+            carrierRequestQuery,
+            { $set: { status: carrierRequestStatuses.CANCELED_BY_USER } },
+          );
+
+          // TODO: emit event order canceled with order id end effected carriers
+          log.info({ affectedCount: carriers.length, order: order._id }, 'Carrier requests removed.');
+        }
+
+        order.status = orderStatuses.CANCELED_BY_USER;
+        await order.save();
+
+        // TODO: emit event cancelled?
+        log.info({ order: order._id }, 'Order cancelled without any problems.');
+        return { success: true };
       }
     }
   };

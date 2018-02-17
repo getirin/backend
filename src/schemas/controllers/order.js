@@ -1,5 +1,5 @@
 const Joi = require('joi');
-const { putRequestSuccess } = require('./common');
+const { putRequestSuccess, cancelSuccessResponse } = require('./common');
 const OrderJoiSchema = require('../models/Order');
 const { pickJoiObj } = require('../../utils');
 const OrderJoiSchemaWithoutUser = pickJoiObj(OrderJoiSchema, ['title', 'items', 'address', 'destination', 'status']).required();
@@ -15,5 +15,9 @@ module.exports = {
       createdAt: Joi.date().timestamp(),
       updatedAt: Joi.date().timestamp()
     }).optional()
-  ).optional()
+  ).optional(),
+  idDeleteParams: {
+    id: Joi.string().required()
+  },
+  idDeleteResponse: cancelSuccessResponse
 };
