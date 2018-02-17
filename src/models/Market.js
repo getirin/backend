@@ -9,7 +9,13 @@ marketSchema.index({ name: 1 }, { unique: true });
 
 marketSchema.statics.nearbyOfLocation = async function(location, $maxDistance, $minDistance){
   const $geometry = { type: 'Point', coordinates: location };
-  return this.find({ location: { $near: { $geometry, $maxDistance, $minDistance } } });
+  const $near = Object.assign(
+    { $geometry },
+    $maxDistance !== undefined ? { $maxDistance } : {},
+    $minDistance !== undefined ? { $minDistance } : {}
+  );
+
+  return this.find({ location: { $near } });
 };
 
 module.exports = mongoose.model('Market', marketSchema);
