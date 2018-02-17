@@ -1,5 +1,6 @@
 const Joi = require('joi');
 const { orderStatuses } = require('../../resources/model-constants');
+const { geoPoint } = require('../controllers/common');
 
 module.exports = Joi.object().keys({
   title: Joi.string().required(),
@@ -10,6 +11,8 @@ module.exports = Joi.object().keys({
     })
   ).required(),
   user: Joi.string().meta({ type: 'ObjectId', ref: 'User' }).required(),
-  destination: Joi.array().items(Joi.number()).length(2).required(),
-  status: Joi.number().valid(...Object.values(orderStatuses)).required()
+  address: Joi.object().unknown().optional(),
+  destination: geoPoint.required(),
+  status: Joi.number().valid(...Object.values(orderStatuses)).required().default(orderStatuses.WAITING),
+  totalPrice: Joi.number().min(0).required(),
 }).required();

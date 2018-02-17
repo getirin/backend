@@ -4,4 +4,5 @@ module.exports = (dependencies) => ({
   carrier: require('./carrier')(dependencies),
   product: require('./product')(dependencies),
   market: require('./market')(dependencies),
+  order: require('./order')(dependencies),
 });
