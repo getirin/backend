@@ -5,4 +5,4 @@ module.exports = Joi.object().keys({
   name: Joi.string().min(3).required(),
   password: Joi.string().min(1).required(),
   userType: Joi.number().valid(...Object.values(userTypes)).required(),
-});
+}).required();
