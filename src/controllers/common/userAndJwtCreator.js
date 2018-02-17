@@ -12,7 +12,7 @@ module.exports = (jwt, userType, failCode) => async function({ payload: { name, 
   try {
     const user = await User.findOrCreate({name, password, userType});
     if(!await user.verifyPassword(password)) return Boom.unauthorized(failCode);
-    const token = jwt.sign({id: user._id, name: user.name, userType});
+    const token = jwt.sign({id: user._id.toString(), name: user.name, userType});
 
     return h.response({success: true, token})
       .header('Authorization', token)
