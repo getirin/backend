@@ -25,7 +25,7 @@
     "boom": "^7.1.1",
     "dotenv": "^5.0.0",
     "hapi": "^17.2.0",
-    "hapi-auth-jwt2": "salzhrani/hapi-auth-jwt2#v-17",
+    "hapi-auth-jwt2": "github:salzhrani/hapi-auth-jwt2#v-17",
     "hapi-swagger": "^9.0.2",
     "inert": "^5.1.0",
     "joi": "^13.1.2",
