@@ -1,5 +1,5 @@
 const mongoose = require('mongoose');
-const { test: { database: { connectionString } }} = require('../../src/config');
+const { test: { database: { connectionString } } } = require('../../src/config');
 const Market = require('../../src/models/Market');
 
 describe('market integration tests', () => {
@@ -10,13 +10,12 @@ describe('market integration tests', () => {
   ];
 
   describe('MarketModel', () => {
-
     beforeAll(async () => {
       await mongoose.connect(connectionString);
     });
 
     beforeEach(async () => {
-      for(let i = 0; i < testData.length; i++) {
+      for(let i = 0; i < testData.length; i++){
         expect(await new Market(testData[i]).save()).toHaveProperty('_id');
       }
     });

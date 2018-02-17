@@ -1,7 +1,5 @@
 const mongoose = require('mongoose');
-const { setupTestLogger } = require('../helper');
-const log = setupTestLogger();
-const { test: { database: { connectionString } }} = require('../../src/config');
+const { test: { database: { connectionString } } } = require('../../src/config');
 const Product = require('../../src/models/Product');
 
 describe('product integration tests', () => {
@@ -17,7 +15,7 @@ describe('product integration tests', () => {
     ];
 
     it('should save without any problems', async () => {
-      for(let i = 0; i < testData.length; i++) {
+      for(let i = 0; i < testData.length; i++){
         expect(await new Product(testData[i]).save()).toHaveProperty('_id');
       }
     });
@@ -36,5 +34,5 @@ describe('product integration tests', () => {
     afterAll(async () => {
       await mongoose.disconnect();
     });
-  })
+  });
 });

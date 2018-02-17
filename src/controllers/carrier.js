@@ -25,7 +25,7 @@ module.exports = ({ log, jwt }) => {
         response: { schema: nearbyPostResponse },
         description: 'lists the nearby carriers to the given point',
       },
-      handler: async function({ payload: { location, maxDistance, minDistance }}){
+      handler: async function({ payload: { location, maxDistance, minDistance } }){
         const users = await User.nearbyOfLocation(
           objectToMongo(location),
           maxDistance,

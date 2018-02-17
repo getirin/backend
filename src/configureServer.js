@@ -22,7 +22,7 @@ async function registerSwaggerPlugins(server, { host, port, schemes }){
   await server.register({
     plugin: HapiSwagger,
     options: {
-      host: process.env.NODE_ENV == "production" ? `${host}` : `${host}:${port}`,
+      host: process.env.NODE_ENV === 'production' ? `${host}` : `${host}:${port}`,
       schemes,
       securityDefinitions: {
         jwt: {
