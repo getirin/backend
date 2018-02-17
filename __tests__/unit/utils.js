@@ -48,8 +48,8 @@ describe('utils', () => {
     });
 
     it('should set non defined keys correctly', () => {
-      expect(deepSet(testObj, 'd', 73)).toEqual({ a: 5, b: { c: 10 }, d : 73});
-      expect(deepSet(testObj, 'd.e', 73)).toEqual({ a: 5, b: { c: 10 }, d : { e: 73 }});
+      expect(deepSet(testObj, 'd', 73)).toEqual({ a: 5, b: { c: 10 }, d: 73 });
+      expect(deepSet(testObj, 'd.e', 73)).toEqual({ a: 5, b: { c: 10 }, d: { e: 73 } });
     });
   });
 

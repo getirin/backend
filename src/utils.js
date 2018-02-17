@@ -1,4 +1,5 @@
 const path = require('path');
+const Joi = require('joi');
 
 function createMongooseEnumValidator(values, message){
   return {
@@ -57,6 +58,16 @@ function pick(obj, keys){
   return k.reduce((acc, key) => deepSet(acc, key, deepGet(obj, key)), {});
 }
 
+function pickJoiObj(joiObj, keys){
+  if(!joiObj.isJoi) return Joi.any();
+  if(!keys || ![Array, String].includes(keys.constructor)) return Joi.object();
+  const k = keys.constructor === Array ? keys : [keys];
+
+  return Joi.object().keys(
+    k.reduce((acc, key) => ({...acc, [key]: Joi.reach(joiObj, key)}), {})
+  );
+}
+
 /**
  * Merges the given route to the original routes array by comparing path and method.
  * @param original the original routes array
@@ -98,5 +109,6 @@ module.exports = {
   deepSet,
   mergeRoutes,
   createRouteGenerator,
-  pick
+  pick,
+  pickJoiObj
 };
