@@ -10,4 +10,5 @@ module.exports = {
   invalidPayloadJson: 'invalid_payload_json',
   noCustomMessage: 'no_custom_message',
   // custom business logic errors below.
+  customerLoginFail: 'user_login_fail',
 };
