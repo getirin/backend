@@ -1,6 +1,6 @@
 const Joi = require('joi');
 
-module.exports = ({ log, jwt }) => ({
+module.exports = ({ log }) => ({
   indexGet: {
     config: {
       validate: {},
