@@ -8,7 +8,7 @@ module.exports = {
     OBTAINED: 1,
     CANCELED_BY_USER: 2,
   },
-  courrierRequestStatuses: {
+  carrierRequestStatuses: {
     WAITING: 0,
     OBTAINED: 1,
     CANCELED_BY_USER: 2,

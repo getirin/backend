@@ -2,7 +2,7 @@ const User = require('../../models/User');
 const Boom = require('boom');
 
 /**
- * Creates a common user and jwt generator for customer/courrier login.
+ * Creates a common user and jwt generator for customer/carrier login.
  * @param jwt the jwt instance to use while creating jwt tokens.
  * @param userType the user type to register the user with.
  * @param failCode the failCode to use when responding with login fail.
