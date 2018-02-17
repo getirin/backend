@@ -10,6 +10,6 @@ module.exports = Joi.object().keys({
     })
   ).required(),
   user: Joi.string().meta({ type: 'ObjectId', ref: 'User' }).required(),
-  destination: Joi.array().items(Joi.number()).required(),
+  destination: Joi.array().items(Joi.number()).length(2).required(),
   status: Joi.number().valid(...Object.values(orderStatuses)).required()
 }).required();
