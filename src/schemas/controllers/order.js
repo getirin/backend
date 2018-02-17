@@ -13,6 +13,6 @@ module.exports = {
       id: Joi.string().required(),
       createdAt: Joi.date().timestamp(),
       updatedAt: Joi.date().timestamp()
-    })
-  )
+    }).optional()
+  ).optional()
 };
