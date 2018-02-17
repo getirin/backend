@@ -18,7 +18,33 @@ const orderMarketMatchSchema = new mongoose.Schema({
   order: { type: mongoose.Schema.Types.ObjectId, ref: 'Order' },
   user: { type: mongoose.Schema.Types.ObjectId, ref: 'User' },
   closeMarkets: [{ type: mongoose.Schema.Types.ObjectId, ref: 'Market' }],
-  destination: { type: { type: String, default: 'Point' }, coordinates: { type: [Number], index: '2dsphere' } },
+  destination: { type: [Number], index: '2dsphere' },
 }, { timestamps: true });
+
+// Can be read from the config file etc.
+const defaultMatcherOptions = {
+  // max distance in meters.
+  maxDistance: 1000
+};
+
+/**
+ * Calculates the nearby markets for the given order, and creates a database entry.
+ * This operation can be done outside of this script, and can also be optimized by doing the calculation outside of mongodb.
+ * Third party apis may be used to **real** shortest path from the market to the order destination point.
+ * @param order
+ * @param Market
+ * @param maxDistance
+ * @return {Promise<mongoose.Schema.methods>}
+ */
+orderMarketMatchSchema.methods.createMarketMatchForOrder = async function(order, Market, { maxDistance } = defaultMatcherOptions){
+  const markets = await Market.nearbyOfLocation(order.destination, maxDistance);
+
+  return new this({
+    order: order._id,
+    user: order.user,
+    destination: order.destination,
+    closeMarkets: markets
+  });
+};
 
 module.exports = mongoose.model('OrderMarketMatch', orderMarketMatchSchema);
