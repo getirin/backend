@@ -1,8 +1,8 @@
-const Boom = require('boom');
 const { loginGetRequestPayload, loginGetSuccess } = require('../schemas/controllers/user');
 const { userTypes } = require('../resources/model-constants');
 const { customerLoginFail } = require('../resources/error-codes');
-const User = require('../models/User');
+// const User = require('../models/User');
+const userAndJwtCreator = require('./common/userAndJwtCreator');
 
 module.exports = ({ log, jwt }) => {
   return {
@@ -12,15 +12,7 @@ module.exports = ({ log, jwt }) => {
         response: { schema: loginGetSuccess },
         description: 'The login endpoint for the user. Creates user if not exists.'
       },
-      handler: async function({ payload: { name, password } }, h){
-        const user = await User.findOrCreate({ name, password, userType: userTypes.CUSTOMER });
-        if(!await user.verifyPassword(password)) throw Boom.unauthorized(customerLoginFail);
-        const token = jwt.sign({ id: user._id, name: user.name, userType: userTypes.CUSTOMER });
-
-        return h.response({ success: true, token })
-          .header('Authorization', token)
-          .takeover();
-      }
+      handler: userAndJwtCreator(jwt, userTypes.CUSTOMER, customerLoginFail)
     }
   };
 };

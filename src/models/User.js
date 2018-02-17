@@ -11,8 +11,8 @@ const userSchema = new mongoose.Schema({
 userSchema.index({ name: 1 }, { unique: true });
 userSchema.plugin(require('mongoose-bcrypt'));
 
-userSchema.statics.findByName = async function(name){
-  const user = await this.findOne({ name });
+userSchema.statics.findUserByNameAndType = async function(name, userType){
+  const user = await this.findOne({ name, userType });
   if(!user) throw new Error("Couldn't find user with the given name.");
   return user;
 };
@@ -25,7 +25,7 @@ userSchema.statics.findByName = async function(name){
  * @return {Promise<*>}
  */
 userSchema.statics.findOrCreate = async function({ name, password, userType }){
-  return this.findByName(name)
+  return this.findUserByNameAndType(name, userType)
     .catch(() => new this({ name, password, userType }).save());
 };
 
