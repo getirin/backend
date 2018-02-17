@@ -102,6 +102,24 @@ function createRouteGenerator(routeDefinitionOverrides, routeConfigOverrides){
   };
 }
 
+/**
+ * Given a point and distance parameters, generates a mongodb query for matching nearby elements.
+ * @param location the point to start the seearch from.
+ * @param $maxDistance the maximum radidus in meters.
+ * @param $minDistance the minumum radius in meters.
+ * @return {{$near: {$geometry: {type: string, coordinates: *}} & any & any}}
+ */
+function createNearGeoQuery(location, $maxDistance, $minDistance){
+  const $geometry = { type: 'Point', coordinates: location };
+  const $near = Object.assign(
+    { $geometry },
+    $maxDistance !== undefined ? { $maxDistance } : {},
+    $minDistance !== undefined ? { $minDistance } : {}
+  );
+
+  return { $near };
+}
+
 module.exports = {
   requireFolderWithKeys,
   createMongooseEnumValidator,
@@ -110,5 +128,6 @@ module.exports = {
   mergeRoutes,
   createRouteGenerator,
   pick,
-  pickJoiObj
+  pickJoiObj,
+  createNearGeoQuery
 };

@@ -18,6 +18,7 @@ module.exports = ({ log }) => {
       handler: async function({ payload: { name, location } }){
         const result = await new Market({ name, location: objectToMongo(location) }).save();
 
+        // TODO: may query the orderMarketMatch table for inserting to orders that are near to our new market.
         return mapInsertForPutOutput(result);
       }
     },

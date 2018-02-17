@@ -1,4 +1,5 @@
 const mongoose = require('mongoose');
+const { createNearGeoQuery } = require('../utils');
 
 const marketSchema = new mongoose.Schema({
   name: { type: String },
@@ -8,14 +9,7 @@ const marketSchema = new mongoose.Schema({
 marketSchema.index({ name: 1 }, { unique: true });
 
 marketSchema.statics.nearbyOfLocation = async function(location, $maxDistance, $minDistance){
-  const $geometry = { type: 'Point', coordinates: location };
-  const $near = Object.assign(
-    { $geometry },
-    $maxDistance !== undefined ? { $maxDistance } : {},
-    $minDistance !== undefined ? { $minDistance } : {}
-  );
-
-  return this.find({ location: { $near } });
+  return this.find({ location: createNearGeoQuery(location, $maxDistance, $minDistance) }).exec();
 };
 
 module.exports = mongoose.model('Market', marketSchema);
