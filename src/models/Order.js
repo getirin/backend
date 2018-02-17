@@ -8,7 +8,7 @@ const orderSchema = new mongoose.Schema({
     product: { type: mongoose.Schema.Types.ObjectId, ref: 'Product' },
     count: { type: Number },
   }],
-  user: { type: mongoose.Schema.Types.ObjectId, refF: 'User' },
+  user: { type: mongoose.Schema.Types.ObjectId, ref: 'User' },
   destination: { type: { type: String, default: 'Point' }, coordinates: { type: [Number], index: '2dsphere' } },
   status: { type: Number, validate: createMongooseEnumValidator(Object.values(orderStatuses), 'Order status invalid!') }
 }, { timestamps: true });
