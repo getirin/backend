@@ -24,4 +24,5 @@ const { createJWTInstance } = require('./auth');
   .catch((err) => {
     log.error(`There was an error while setting up the server.`);
     log.error(err);
+    process.exit(-1);
   });
