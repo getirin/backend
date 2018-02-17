@@ -12,4 +12,5 @@ module.exports = {
   // custom business logic errors below.
   customerLoginFail: 'user_login_fail',
   courrierLoginFail: 'courrier_login_fail',
+  couldNotCreateProduct: 'could_not_create_product'
 };
