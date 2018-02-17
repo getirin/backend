@@ -68,6 +68,7 @@ module.exports = ({ log }) => {
       config: {
         validate: { params: idDeleteParams },
         response: { schema: idDeleteResponse },
+        description: 'cancels the order',
         auth: 'jwt',
       },
       handler: async function({ auth: { credentials: { id: userID, userType } }, params: { id: orderID } }){
