@@ -52,7 +52,7 @@ function deepSet(obj, path, value){
  */
 function pick(obj, keys){
   if(!keys || keys.length === 0 || ![Array, String].includes(keys.constructor)) return {};
-  if(!obj || obj.constructor !== Object) return {};
+  if(!obj) return {};
   const k = keys.constructor === Array ? keys : [keys];
 
   return k.reduce((acc, key) => deepSet(acc, key, deepGet(obj, key)), {});
