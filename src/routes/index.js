@@ -1,7 +1,7 @@
 const { createRouteGenerator } = require('../utils');
 
 module.exports = ({ controllers, routeDefinitionOverrides = {}, routeConfigOverrides = {} }) => {
-  const { healthz, user, courrier, product } = controllers;
+  const { healthz, user, courrier, product, market } = controllers;
   const createRouteForController = createRouteGenerator(routeDefinitionOverrides, routeConfigOverrides);
 
   return [
@@ -25,5 +25,13 @@ module.exports = ({ controllers, routeDefinitionOverrides = {}, routeConfigOverr
       method: 'PUT',
       path: '/product'
     }),
+    createRouteForController(market.indexPut, {
+      method: 'PUT',
+      path: '/market',
+    }),
+    createRouteForController(market.nearbyPost, {
+      method: 'POST',
+      path: '/market/nearby',
+    })
   ];
 };
