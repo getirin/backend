@@ -11,7 +11,7 @@ module.exports = ({ log, jwt }) => {
         response: { schema: loginGetSuccess },
         description: 'The login endpoint for the carriers. Creates a new carrier if not exists.'
       },
-      handler: userAndJwtCreator(jwt, userTypes.COURIER, errorCodes.carrierLoginFail)
+      handler: userAndJwtCreator(jwt, userTypes.CARRIER, errorCodes.carrierLoginFail)
     }
   };
 };
