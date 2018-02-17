@@ -1,7 +1,7 @@
 {
-  "name": "Backend Boilerplate",
-  "description": "Backend Boilerplate with HapiJS and Swagger.",
-  "repository": "https://github.com/yengas/backend-boilerplate",
+  "name": "Gezdir.in",
+  "description": "The backend application of Getir.in team in 2018 Getir-Bitaksi Hackathon.",
+  "repository": "https://github.com/getirin/backend",
   "logo": "https://github.com/hapijs/hapi/raw/65944e55ea35189c68b2a5bd9f8cc039e5147961/images/17.png",
-  "keywords": ["backend", "boilerplate", "hapijs", "swagger"]
+  "keywords": ["backend", "hackathon", "getirin", "getir", "bitaksi"]
 }

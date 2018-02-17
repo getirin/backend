@@ -1,5 +1,5 @@
 <div align="center>
-    <img src="https://github.com/hapijs/hapi/raw/65944e55ea35189c68b2a5bd9f8cc039e5147961/images/17.png" alt="HapiJS Backend Boilerplate">
+    <img src="https://github.com/hapijs/hapi/raw/65944e55ea35189c68b2a5bd9f8cc039e5147961/images/17.png" alt="Getir.in Backend">
     <h1>Getir.in Backend</h1>
 </div>
 
@@ -8,7 +8,7 @@ This is the backend of the [getir.in](https://github.com/getirin) project, done 
 --------------------
 
 [![Deploy](https://www.herokucdn.com/deploy/button.svg)](https://heroku.com/deploy?template=https://github.com/yengas/backend-boilerplate)
-[![Documentation](	https://img.shields.io/swagger/valid/2.0/https/yengas-boilerplate.herokuapp.com/swagger.json.svg)](https://yengas-boilerplate.herokuapp.com/documentation)
+[![Documentation](	https://img.shields.io/swagger/valid/2.0/https/api.getir.in/swagger.json.svg)](https://yengas-boilerplate.herokuapp.com/documentation)
 
 # Features
 

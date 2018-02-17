@@ -19,7 +19,7 @@ module.exports = {
     },
   },
   database: {
-    connectionString: process.env.MONGODB_CONNECTION_STRING || 'mongodb://localhost/getirin',
+    connectionString: process.env.MONGODB_CONNECTION_STRING || process.env.MONGODB_URI || 'mongodb://localhost/getirin',
   },
   test: {
     database: {
