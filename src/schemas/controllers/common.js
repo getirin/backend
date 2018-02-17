@@ -1,6 +1,4 @@
 const Joi = require('joi');
-const { pickJoiObj } = require('../../utils');
-const User = require('../../schemas/models/User');
 
 const loginSuccess = Joi.object().keys({
   token: Joi.string().required(),
@@ -13,7 +11,10 @@ const putRequestSuccess = Joi.object().keys({
   createdAt: Joi.date().timestamp(),
 });
 
-const loginRequest = pickJoiObj(User, ['name', 'password']);
+const loginRequest = Joi.object().keys({
+  name: Joi.string().required(),
+  password: Joi.string().required(),
+}).required();
 
 const geoPoint = Joi.object().keys({
   lat: Joi.number().required(),
