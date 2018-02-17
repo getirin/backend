@@ -13,7 +13,7 @@ module.exports = ({ log }) => {
       config: {
         validate: { payload: indexPutRequest },
         response: { schema: indexPutResponse },
-        description: 'creates and put market record'
+        description: 'creates and puts market record'
       },
       handler: async function({ payload: { name, location } }){
         const result = await new Market({ name, location: objectToMongo(location) }).save();
@@ -26,7 +26,7 @@ module.exports = ({ log }) => {
       config: {
         validate: { payload: nearbyPostRequest },
         response: { schema: nearbyPostResponse },
-        description: 'lists the nearby markets to the given point.'
+        description: 'lists the nearby markets relative to the given point'
       },
       handler: async function({ payload: { location, maxDistance, minDistance } }){
         const result = await Market.nearbyOfLocation(objectToMongo(location), maxDistance, minDistance);

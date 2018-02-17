@@ -1,5 +1,5 @@
 const Joi = require('joi');
-const { indexPutRequest, indexPutResponse, listPostResponse } = require('../schemas/controllers/order');
+const { indexPutRequest, indexPutResponse, listGetResponse } = require('../schemas/controllers/order');
 const mapInsertForPutOutput = require('./common/mapInsertForPutOutput');
 const { mongoToObject, objectToMongo } = require('./common/convertLatLngToMongoArray');
 const Order = require('../models/Order');
@@ -28,7 +28,7 @@ module.exports = ({ log }) => {
       config: {
         validate: { payload: indexPutRequest },
         response: { schema: indexPutResponse },
-        description: 'create a order record for the authenticated user in the database.',
+        description: 'create an order record for the authenticated user in the database',
         auth: 'jwt'
       },
       handler: async function({ auth, payload }){
@@ -42,16 +42,16 @@ module.exports = ({ log }) => {
 
         log.info(
           { insertId: ommSaveResult._id, closeMarkets: ommSaveResult.closeMarkets.map(m => m && m.name) },
-          'Created order market match for our new order.'
+          'Created order market match for our new order'
         );
 
         return mapInsertForPutOutput(order);
       }
     },
-    listPost: {
+    listGet: {
       config: {
-        response: { schema: listPostResponse },
-        description: 'lists the orders for the authenticated user.',
+        response: { schema: listGetResponse },
+        description: 'lists the orders for the authenticated user',
         auth: 'jwt'
       },
       handler: async function({ auth }){

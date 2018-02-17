@@ -7,7 +7,7 @@ module.exports = ({ log }) => ({
       response: {
         schema: Joi.object().keys({ status: Joi.boolean(), time: Joi.date().timestamp() }).label('Healthz Response')
       },
-      description: 'Whether the server is up or not.',
+      description: 'returns if the server is healthy or not',
     },
     handler: async function(req){
       log.info('Got request for healthz.');

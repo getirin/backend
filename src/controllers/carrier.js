@@ -15,7 +15,7 @@ module.exports = ({ log, jwt }) => {
       config: {
         validate: { payload: loginGetRequestPayload },
         response: { schema: loginGetSuccess },
-        description: 'The login endpoint for the carriers. Creates a new carrier if not exists.'
+        description: 'logins carriers, creates a new one if not exists',
       },
       handler: userAndJwtCreator(jwt, userTypes.CARRIER, errorCodes.carrierLoginFail)
     },
@@ -23,7 +23,7 @@ module.exports = ({ log, jwt }) => {
       config: {
         validate: { payload: nearbyPostRequest },
         response: { schema: nearbyPostResponse },
-        description: 'list the nearby carriers to the given point.'
+        description: 'lists the nearby carriers to the given point',
       },
       handler: async function({ payload: { location, maxDistance, minDistance }}){
         const users = await User.nearbyOfLocation(

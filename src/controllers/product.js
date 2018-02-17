@@ -14,7 +14,7 @@ module.exports = ({ log }) => {
       config: {
         validate: { payload: indexPutRequest },
         response: { schema: indexPutResponse },
-        description: 'create and put product record'
+        description: 'creates and puts product record'
       },
       handler: async function({ payload: { name, price } }){
         return new Product({ name, price }).save()

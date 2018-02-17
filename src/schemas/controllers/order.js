@@ -7,8 +7,8 @@ const OrderJoiSchemaWithoutUser = pickJoiObj(OrderJoiSchema, ['title', 'items', 
 module.exports = {
   indexPutRequest: OrderJoiSchemaWithoutUser,
   indexPutResponse: putRequestSuccess,
-  listPostRequest: {},
-  listPostResponse: Joi.array().items(
+  listGetRequest: {},
+  listGetResponse: Joi.array().items(
     OrderJoiSchemaWithoutUser.keys({
       id: Joi.string().required(),
       totalPrice: Joi.number().required(),

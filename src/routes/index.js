@@ -50,8 +50,8 @@ module.exports = ({ controllers, routeDefinitionOverrides = {}, routeConfigOverr
       method: 'PUT',
       path: '/order',
     }),
-    createRouteForController(order.listPost, {
-      method: 'POST',
+    createRouteForController(order.listGet, {
+      method: 'GET',
       path: '/order/list',
     }),
   ];

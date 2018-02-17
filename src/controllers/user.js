@@ -11,7 +11,7 @@ module.exports = ({ log, jwt }) => {
       config: {
         validate: { payload: loginGetRequestPayload },
         response: { schema: loginGetSuccess },
-        description: 'The login endpoint for the user. Creates user if not exists.'
+        description: 'logins the customer, creates a new one if not exists',
       },
       handler: userAndJwtCreator(jwt, userTypes.CUSTOMER, customerLoginFail)
     },
@@ -19,7 +19,7 @@ module.exports = ({ log, jwt }) => {
       config: {
         validate: { payload: lastSeenPostRequest },
         response: { schema: lastSeenPostResponse },
-        description: 'update the last seen location of the record.',
+        description: 'updates the last seen location of the authenticated user',
         auth: 'jwt',
       },
       handler: async function({ auth, payload: { location } }){
