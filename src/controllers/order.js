@@ -1,7 +1,9 @@
+const Joi = require('joi');
 const { indexPutRequest, indexPutResponse, listPostResponse } = require('../schemas/controllers/order');
 const mapInsertForPutOutput = require('./common/mapInsertForPutOutput');
 const { mongoToObject, objectToMongo } = require('./common/convertLatLngToMongoArray');
 const Order = require('../models/Order');
+const Product = require('../models/Product');
 const Market = require('../models/Market');
 const OrderMarketMatch = require('../models/OrderMarketMatch');
 
@@ -31,7 +33,8 @@ module.exports = ({ log }) => {
       },
       handler: async function({ auth, payload }){
         const { id: user } = auth.credentials;
-        const order = await new Order({ ...payload, destination: objectToMongo(payload.destination), user }).save();
+        const totalPrice = await Product.calculateTotalPriceOfProducts(payload.items.map(item => item.product));
+        const order = await new Order({ ...payload, totalPrice, destination: objectToMongo(payload.destination), user }).save();
         log.info({ insertId: order._id, destination: payload.destination }, 'Inserted order without any problems, trying to calculate the nearest markets.');
         // TODO: move this out of this service.
         const orderMarketMatch = await OrderMarketMatch.createMarketMatchForOrder(order, Market);
