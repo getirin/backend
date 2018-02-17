@@ -4,6 +4,7 @@ const port = process.env.PORT || 8080;
 module.exports = {
   host,
   port,
+  cors: process.env.ENABLE_CORS || true,
   swagger: {
     host: process.env.SWAGGER_HOST || host,
     port: process.env.SWAGGER_PORT || port,

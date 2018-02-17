@@ -10,7 +10,7 @@ const { createJWTInstance } = require('./auth');
   const dependencies = { log, jwt };
   const controllers = require('./controllers')(dependencies);
   const routes = require('./routes')({ controllers, routeConfigOverrides: { tags: ['api'] } });
-  const server = Hapi.server({ port: config.port });
+  const server = Hapi.server({ port: config.port, routes: { cors: config.cors } });
 
   await connectDatabase(config.database);
   await registerProductionPlugins(server, config);
