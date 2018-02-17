@@ -40,7 +40,7 @@ module.exports = ({ log }) => {
         const order = await new Order({ ...payload, totalPrice, destination: objectToMongo(payload.destination), user }).save();
         log.info({ insertId: order._id, destination: payload.destination }, 'Inserted order without any problems, trying to calculate the nearest markets.');
         // TODO: move this out of this service.
-        const orderMarketMatch = await OrderMarketMatch.createMarketMatchForOrder(order, Market);
+        const orderMarketMatch = await OrderMarketMatch.createMarketMatchForOrder(order);
         const ommSaveResult = await orderMarketMatch.save();
 
         log.info(

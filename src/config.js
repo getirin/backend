@@ -27,5 +27,11 @@ module.exports = {
     database: {
       connectionString: process.env.TEST_MONGODB_CONNECTION_STRING || 'mongodb://localhost/getirin-test'
     }
+  },
+  application: {
+    orderMatch: {
+      // The radius that determines which markets can supply a specific order
+      closeMarketMaxDistance: 1000,
+    }
   }
 };

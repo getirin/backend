@@ -13,6 +13,8 @@
  * For ease of development we will just create a record for this collection after creating the order in the http handler.
  */
 const mongoose = require('mongoose');
+const Market = require('./Market');
+const { application: { orderMatch: { closeMarketMaxDistance: maxDistance } } } = require('../config');
 
 const orderMarketMatchSchema = new mongoose.Schema({
   order: { type: mongoose.Schema.Types.ObjectId, ref: 'Order' },
@@ -24,7 +26,7 @@ const orderMarketMatchSchema = new mongoose.Schema({
 // Can be read from the config file etc.
 const defaultMatcherOptions = {
   // max distance in meters.
-  maxDistance: 1000
+  maxDistance
 };
 
 /**
@@ -32,11 +34,10 @@ const defaultMatcherOptions = {
  * This operation can be done outside of this script, and can also be optimized by doing the calculation outside of mongodb.
  * Third party apis may be used to **real** shortest path from the market to the order destination point.
  * @param order
- * @param Market
- * @param maxDistance
+ * @param maxDistance the maximum distance to look for in meters.
  * @return {Promise<mongoose.Schema.methods>}
  */
-orderMarketMatchSchema.statics.createMarketMatchForOrder = async function(order, Market, { maxDistance } = defaultMatcherOptions){
+orderMarketMatchSchema.statics.createMarketMatchForOrder = async function(order, { maxDistance } = defaultMatcherOptions){
   const markets = await Market.nearbyOfLocation(order.destination, maxDistance);
 
   return new this({
