@@ -7,6 +7,7 @@ module.exports = {
   swagger: {
     host: process.env.SWAGGER_HOST || host,
     port: process.env.SWAGGER_PORT || port,
+    schemes: JSON.parse(process.env.SWAGGER_SCHEMES || '["http"]'),
   },
   logging: {
     name: 'backend-boilerplate',

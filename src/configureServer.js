@@ -13,7 +13,7 @@ const { validateTokenNoop } = require('./auth');
  * @param port the port swagger editor will use
  * @return {Promise<void>}
  */
-async function registerSwaggerPlugins(server, { host, port }){
+async function registerSwaggerPlugins(server, { host, port, schemes }){
   await server.register([
     Inert,
     Vision,
@@ -22,7 +22,8 @@ async function registerSwaggerPlugins(server, { host, port }){
   await server.register({
     plugin: HapiSwagger,
     options: {
-      host: `${host}:${port}`,
+      host: process.env.NODE_ENV == "production" ? `${host}` : `${host}:${port}`,
+      schemes,
       securityDefinitions: {
         jwt: {
           type: 'apiKey',

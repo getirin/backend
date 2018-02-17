@@ -8,7 +8,7 @@ This is the backend of the [getir.in](https://github.com/getirin) project, done 
 --------------------
 
 [![Deploy](https://www.herokucdn.com/deploy/button.svg)](https://heroku.com/deploy?template=https://github.com/yengas/backend-boilerplate)
-[![Documentation](	https://img.shields.io/swagger/valid/2.0/https/api.getir.in/swagger.json.svg)](https://yengas-boilerplate.herokuapp.com/documentation)
+[![Documentation](	https://img.shields.io/swagger/valid/2.0/https/api.getir.in/swagger.json.svg)](https://api.getir.in/documentation)
 
 # Features
 
