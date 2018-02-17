@@ -29,6 +29,7 @@
     "hapi-swagger": "^9.0.2",
     "inert": "^5.1.0",
     "joi": "^13.1.2",
+    "joigoose": "^4.0.0",
     "jsonwebtoken": "^8.1.1",
     "mongoose": "^5.0.6",
     "pino": "^4.10.4",
