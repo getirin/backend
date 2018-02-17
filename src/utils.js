@@ -1,5 +1,12 @@
 const path = require('path');
 
+function createMongooseEnumValidator(values, message){
+  return {
+    validator: function(v){ return values.includes(v); },
+    message,
+  };
+}
+
 function requireFolderWithKeys(folder, keys){
   keys.reduce((curr, key) => ({ ...curr, key: require(path.join(folder, key)) }), {});
 }
@@ -55,6 +62,7 @@ function createRouteGenerator(routeDefinitionOverrides, routeConfigOverrides){
 
 module.exports = {
   requireFolderWithKeys,
+  createMongooseEnumValidator,
   deepGet,
   mergeRoutes,
   createRouteGenerator

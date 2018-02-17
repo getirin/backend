@@ -32,6 +32,7 @@
     "joigoose": "^4.0.0",
     "jsonwebtoken": "^8.1.1",
     "mongoose": "^5.0.6",
+    "mongoose-bcrypt": "^1.5.0",
     "pino": "^4.10.4",
     "vision": "^5.3.1"
   },
