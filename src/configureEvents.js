@@ -43,4 +43,10 @@ async function configureEvents({ host, port, channel }){
   };
 }
 
-module.exports = { configureEvents };
+async function configureMock(){
+  const noOp = async () => {};
+  const keys = ['locationChange', 'orderFinished', 'carrierRequest', 'orderCreated', 'orderAccepted'];
+  return keys.reduce((acc, key) => { acc[key] = noOp; return acc; }, {});
+}
+
+module.exports = { configureEvents, configureMock };

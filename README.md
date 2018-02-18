@@ -8,7 +8,7 @@ This is the backend of the [getir.in](https://github.com/getirin) project, done 
 --------------------
 
 [![Deploy](https://www.herokucdn.com/deploy/button.svg)](https://heroku.com/deploy?template=https://github.com/yengas/backend-boilerplate)
-[![Documentation](	https://img.shields.io/swagger/valid/2.0/https/api.getir.in/swagger.json.svg)](https://api.getir.in/documentation)
+[![Documentation](https://img.shields.io/swagger/valid/2.0/https/api.getir.in/swagger.json.svg)](https://api.getir.in/documentation)
 
 # Features
 
@@ -64,15 +64,36 @@ Table of contents (WIP)
 
 # Documentation
 # Initial Setup
-Cloning the repository, what to change.
 # Configuration
+## The most overengineered part of our code!
+Most of the time spent on this project was 
 # Running the project
-Explains how to run the project
 ## Using Docker
+Project relies on Docker for offline development. All backend development has been done locally, with a `mongo:3.6.2` docker image and the docker-compose reference file.
 ### Docker-Compose file
+For development you can just run the `docker-compose` up command and the container will start running. However there isn't any database in the configuration, so you either need to add it, or run the container on net=host. This file is just a reference.
 # Deployment
-Deployment related info. heroku, docker, other platforms.
+The repository uses Heroku deployment configuration so it can be run anywhere. The local installation, if you want to run it locally requires node 8.9.4. However there are Dockerfiles both for development and production.
+
+There is also a very handy [Makefile](Makefile) which includes utility commands like running tests, lint, mocks in Docker Development images. It also has commands for building images and running them. However i suggest you to use the [docker-compose.yml](./docker-compose.yml) for the local development.
+# Environment Variables
+Environment variables are used to enable the configuration of this project. Below are list of these environment variables and what they configure.
+
+- **APP_HOST** the host of the hapijs configuration, default: `localhost`
+- **PORT** the port to listen on, default: `8080`
+- **ENABLE_CORS** whether to enable hapi cors or not, default: `true`
+- **SWAGGER_HOST** the hapi-swagger host which will be used to prefix `localhost`
+- **SWAGGER_PORT** the swagger port to use in the documentation ui, default: `8080`
+- **JWT_KEY** the jwt key to sign secrets. default: `helloworld`
+- **JWT_ALGORITHM** the jwt algorithm to use, default: `HS256`
+- **MONGODB_CONNECTION_STRING** or **MONGODB_URI** the mongodb connection string to use `mongodb://localhost/getirin`
+- **TEST_MONGODB_CONNECTION_STRING** mongo database to use when testing. `mongodb://localhost/getirin-test`
+- **REDIS_HOST** the host to use for events redis database, default: `localhost`
+- **REDIS_PORT** the port to use for events redis port, default: `6379`
+
 # Tests
-Test engine used how to go about unit tests, integration tests. 
+Tests are done with Jest. There are both unit and integration tests. The default `npm test` command runs the unit tests only. If you would like to run integration tests , you can use `npm run test:integration`. Integration tests requires a Mongo database connection. 
+
 # Mocks
+You can run `npm run serve:mock` script to get a randomly generated data out of your joi schemas. We also have a make command for this.
 # FAQ
