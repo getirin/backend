@@ -27,6 +27,7 @@ module.exports = ({ log }) => {
     // check for invalid situations.
     if(userType !== userTypes.CARRIER) return Boom.badRequest(errorCodes.customerCanNotSendCarrierRequest);
     if(await CarrierRequest.count({ order, carrier: id }) > 0) return Boom.badRequest(errorCodes.youAlreadyRequestedThisOrder);
+    if(order.status !== orderStatuses.WAITING) return Boom.badRequest(errorCodes.orderStatusNotCompatible);
 
     childLog.info('Generating carrier request.');
     // Insert a new carrier request otherwise.
@@ -45,7 +46,7 @@ module.exports = ({ log }) => {
 
   async function manageAcceptState(target, { request }, { id, userType }, childLog){
     childLog.info('Got accept carrier request request');
-    if(request.user !== id) return Boom.notFound();
+    if(request.user._id.toString() !== id) return Boom.notFound();
     if(userType !== userTypes.CUSTOMER) return Boom.badRequest(errorCodes.invalidUserType);
     if(request.status === carrierRequestStatuses.OBTAINED) return Boom.badRequest(errorCodes.canNotChangeToSameStatus);
     if(request.status !== carrierRequestStatuses.WAITING) return Boom.badRequest(errorCodes.requestStatusNotCompatible);
@@ -53,7 +54,7 @@ module.exports = ({ log }) => {
 
     childLog.info('Accepting carrier request.');
     request.status = carrierRequestStatuses.OBTAINED;
-    await request.save();
+    await CarrierRequest.findByIdAndUpdate(request._id, { $set: { status: request.status }});
     request.order.status = orderStatuses.OBTAINED;
     await request.order.save();
     // TODO: emit accepted status to websocket
@@ -62,7 +63,7 @@ module.exports = ({ log }) => {
 
   async function manageRejectState(target, { request }, { id, userType }, childLog){
     childLog.info('Got reject carrier request request.');
-    if(request.user !== id) return Boom.notFound();
+    if(request.user._id.toString() !== id) return Boom.notFound();
     if(userType !== userTypes.CUSTOMER) return Boom.badRequest(errorCodes.invalidUserType);
     if(request.status === carrierRequestStatuses.CANCELED_BY_USER) return Boom.badRequest(errorCodes.canNotChangeToSameStatus);
     if(request.status !== carrierRequestStatuses.WAITING) return Boom.badRequest(errorCodes.requestStatusNotCompatible);
@@ -70,7 +71,7 @@ module.exports = ({ log }) => {
 
     childLog.info('Rejecting carrier request.');
     request.status = carrierRequestStatuses.CANCELED_BY_USER;
-    await request.save();
+    await CarrierRequest.findByIdAndUpdate(request._id, { $set: { status: request.status }});
     request.order.status = orderStatuses.OBTAINED;
     await request.order.save();
     // TODO: emit rejected status to websocket
@@ -79,7 +80,7 @@ module.exports = ({ log }) => {
 
   async function manageCancelState(target, { request }, { id, userType }, childLog){
     childLog.info('Got cancel carrier request request.');
-    if(request.carrier !== id) return Boom.notFound();
+    if(request.carrier._id.toString() !== id) return Boom.notFound();
     if(userType !== userTypes.CARRIER) return Boom.badRequest(errorCodes.invalidUserType);
     if(request.status === carrierRequestStatuses.CANCELED_BY_CARRIER) return Boom.badRequest(errorCodes.canNotChangeToSameStatus);
     if(![carrierRequestStatuses.OBTAINED, carrierRequestStatuses.WAITING].includes(request.status)){
@@ -94,14 +95,14 @@ module.exports = ({ log }) => {
     }
     childLog.info('Canceling the carrier request.');
     request.status = carrierRequestStatuses.CANCELED_BY_CARRIER;
-    await request.save();
+    await CarrierRequest.findByIdAndUpdate(request._id, { $set: { status: request.status }});
     // TODO: emit carrier canceled request to websocket
     return { success: true };
   }
 
   async function manageDoneState(target, { request }, { id, userType }, childLog){
     childLog.info('Got carrier request done request.');
-    if(request.carrier !== id) return Boom.notFound();
+    if(request.carrier._id.toString() !== id) return Boom.notFound();
     if(userType !== userTypes.CARRIER) return Boom.badRequest(errorCodes.invalidUserType);
     if(request.status === carrierRequestStatuses.FINISHED) return Boom.badRequest(errorCodes.canNotChangeToSameStatus);
     if(request.status !== carrierRequestStatuses.OBTAINED) return Boom.badRequest(errorCodes.requestStatusNotCompatible);
@@ -109,7 +110,7 @@ module.exports = ({ log }) => {
 
     childLog.info('Marking as finished.');
     request.status = carrierRequestStatuses.FINISHED;
-    await request.save();
+    await CarrierRequest.findByIdAndUpdate(request._id, { $set: { status: request.status }});
     request.order.status = orderStatuses.FINISHED;
     await request.order.save();
     // TODO: emit event done to websocket
@@ -142,7 +143,7 @@ module.exports = ({ log }) => {
 
         childLog = log.child({ order: order._id, user: order.user });
       } else {
-        entities.request = CarrierRequest.findById(params.id).populate('order carrier user').exec();
+        entities.request = await CarrierRequest.findById(params.id).populate('order carrier user').exec();
         const { request } = entities;
 
         childLog = log.child(
