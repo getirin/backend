@@ -7,7 +7,7 @@ module.exports = Joi.object().keys({
   items: Joi.array().items(
     Joi.object().keys({
       product: Joi.string().meta({ type: 'ObjectId', ref: 'Product' }),
-      count: Joi.number()
+      count: Joi.number().min(1)
     })
   ).required(),
   user: Joi.string().meta({ type: 'ObjectId', ref: 'User' }).required(),
