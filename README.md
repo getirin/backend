@@ -14,12 +14,15 @@ This is the backend of the [getir.in](https://github.com/getirin) project, done 
 
 Whole projects features compatibility with Docker, Heroku for deployment, Swagger for Documentation, Unit and Integration tests with Jest, Logging with Pino, Linting according to custom taste extended over standardjs. As the backend framework of choice, HapiJS v17 is used. It features async rest endpoint handlers, auto documentation generation for routes, Schema validation with Joi.
 
+For more technical information, you can check the [backend-boilerplate](https://github.com/Yengas/backend-boilerplate) project, which is the initial boilerplate we used for this project. It has more technical information.
+
 Table of contents (WIP)
 =================
 
 <!--ts-->
    * [Table of contents](#table-of-contents)
    * [Structure](#structure)
+   * [Tech](#tech)
    * [Configuration](#configuration)
    * [Running the project](#running-the-project)
       * [Using Docker](#using-docker)
@@ -51,6 +54,8 @@ Table of contents (WIP)
 │   ├── resources           # constant values and data
 │   ├── plugins             # custom hapijs plugins
 │   ├── log.js              # logger instance creator
+│   ├── configureDatabase.js# mongoose setup
+│   ├── configureEvents.js  # events that get triggered via controllers when specific things happen
 │   ├── configureServer.js  # helper functions to configure the server
 │   ├── index.js            # entrypoint for source folder
 │   └── config.js           # application config
@@ -59,6 +64,12 @@ Table of contents (WIP)
 ├── Makefile                # make file for easing docker usage
 └── docker-compose.yml      # reference docker-compose for dev
 ```
+# Tech
+We aimed to create an auto generating documentation with endpoint input/output validation. This also helped with having a somewhat type safe feeling because we knew which endpoints got which inputs. After that we seperated the business logic from the controllers by trying to use utility functions, mongoose models, and dependency injection.
+
+Aside from a HTTp endpoint fully documentated with swagger, this project also has a Redis sink which controllers push events to(order create, carrier request sent etc.). These events can be used to run seperate services that extend the features of this project.
+
+An example to this is the [Carrier bot](https://github.com/getirin/bot) we are making. It listens on Redis events and exposes a Websocket interface, so we can simulate a carrier user in our system.
 
 # Configuration
 The application is configured using environment variables to make it run everywhere. Most of the popular deployment softwares such as Heroku, Kubernetes rely on this aswell. To make it easier to work with, we also added dotenv so you can define a `.env` project at the root of your folder while working bare-metal on your computer. 
