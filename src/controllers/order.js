@@ -1,12 +1,14 @@
 const Boom = require('boom');
-const { indexPutRequest, indexPutResponse, listGetResponse, idDeleteParams, idDeleteResponse } = require('../schemas/controllers/order');
+const {
+  indexPutRequest, indexPutResponse, listGetResponse,
+  idDeleteParams, idDeleteResponse, findMatchPostRequest, findMatchPostResponse
+} = require('../schemas/controllers/order');
 const errorCodes = require('../resources/error-codes');
 const { userTypes, orderStatuses, carrierRequestStatuses } = require('../resources/model-constants');
 const mapInsertForPutOutput = require('./common/mapInsertForPutOutput');
 const { mongoToObject, objectToMongo } = require('./common/convertLatLngToMongoArray');
 const Order = require('../models/Order');
 const Product = require('../models/Product');
-const Market = require('../models/Market');
 const OrderMarketMatch = require('../models/OrderMarketMatch');
 const CarrierRequest = require('../models/CarrierRequest');
 
@@ -104,6 +106,21 @@ module.exports = ({ log }) => {
         // TODO: emit event cancelled?
         log.info({ order: order._id }, 'Order cancelled without any problems.');
         return { success: true };
+      }
+    },
+    findMatchPost: {
+      config: {
+        validate: { payload: findMatchPostRequest },
+        response: { schema: findMatchPostResponse },
+        description: 'finds orders which customer and markets are in the given radius',
+        auth: 'jwt',
+      },
+      handler: async function({ auth: { credentials: { userType } }, payload: { location, maxDistance } }){
+        if(userType !== userTypes.CARRIER) return Boom.badRequest(errorCodes.onlyCarrierCanFindMatches);
+        const mongoLocation = objectToMongo(location);
+        const orders = await OrderMarketMatch.findMatchesWithRadius(mongoLocation, maxDistance);
+
+        return orders.map(mapOrderForOutput);
       }
     }
   };

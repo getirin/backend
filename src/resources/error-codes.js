@@ -16,5 +16,7 @@ module.exports = {
   // order canceling
   onlyCustomersCanCancelOrders: 'only_customers_can_cancel_orders',
   orderAlreadyCancelled: 'order_already_cancelled',
-  canNotCancelFinishedOrders: 'can_not_cancel_finished_orders'
+  canNotCancelFinishedOrders: 'can_not_cancel_finished_orders',
+  // order find match
+  onlyCarrierCanFindMatches: 'only_carriers_can_find_matches',
 };

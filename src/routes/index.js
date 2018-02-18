@@ -58,5 +58,9 @@ module.exports = ({ controllers, routeDefinitionOverrides = {}, routeConfigOverr
       method: 'GET',
       path: '/order/list',
     }),
+    createRouteForController(order.findMatchPost, {
+      method: 'POST',
+      path: '/order/findMatch',
+    }),
   ];
 };
