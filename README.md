@@ -20,13 +20,11 @@ Table of contents (WIP)
 <!--ts-->
    * [Table of contents](#table-of-contents)
    * [Structure](#structure)
-   * [Documentation](#documentation)
-   * [Initial Setup](#initial-setup)
    * [Configuration](#configuration)
    * [Running the project](#running-the-project)
       * [Using Docker](#using-docker)
         * [Docker-Compose file](#docker-compose-file)
-      * [Local Development](#local-files)
+   * [Deployment](#deployment)
    * [Tests](#tests)
    * [Mocks](#mocks)
    * [FAQ](#faq)
@@ -62,11 +60,14 @@ Table of contents (WIP)
 └── docker-compose.yml      # reference docker-compose for dev
 ```
 
-# Documentation
-# Initial Setup
 # Configuration
+The application is configured using environment variables to make it run everywhere. Most of the popular deployment softwares such as Heroku, Kubernetes rely on this aswell. To make it easier to work with, we also added dotenv so you can define a `.env` project at the root of your folder while working bare-metal on your computer. 
+
+The main configuration file is on [./src/config.js](./src/config.js) and its pretty self describing. Configurations are commented and the environment variables are explained below.
+
 ## The most overengineered part of our code!
-Most of the time spent on this project was 
+Most of the time spent on this project was setting up the endpoints that required to run the application. However there is one part that we think we have overdone ourselves and overengineered! Check [this commit](https://github.com/getirin/backend/commit/67f98ed83119cc4adb7ae5ce1c266f71ace81fb1) out to see what we mean. It's a fully configurable sorting algorithm, that dynamically generates mongodb queries. 
+
 # Running the project
 ## Using Docker
 Project relies on Docker for offline development. All backend development has been done locally, with a `mongo:3.6.2` docker image and the docker-compose reference file.
