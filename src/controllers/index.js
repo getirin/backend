@@ -5,4 +5,5 @@ module.exports = (dependencies) => ({
   product: require('./product')(dependencies),
   market: require('./market')(dependencies),
   order: require('./order')(dependencies),
+  request: require('./request')(dependencies),
 });

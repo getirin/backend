@@ -1,7 +1,7 @@
 const { createRouteGenerator } = require('../utils');
 
 module.exports = ({ controllers, routeDefinitionOverrides = {}, routeConfigOverrides = {} }) => {
-  const { healthz, user, carrier, product, market, order } = controllers;
+  const { healthz, user, carrier, product, market, order, request } = controllers;
   const createRouteForController = createRouteGenerator(routeDefinitionOverrides, routeConfigOverrides);
 
   return [
@@ -61,6 +61,26 @@ module.exports = ({ controllers, routeDefinitionOverrides = {}, routeConfigOverr
     createRouteForController(order.findMatchPost, {
       method: 'POST',
       path: '/order/findMatch',
+    }),
+    createRouteForController(request.indexPut, {
+      method: 'PUT',
+      path: '/request',
+    }),
+    createRouteForController(request.acceptPatch, {
+      method: 'PATCH',
+      path: '/request/{id}/accept',
+    }),
+    createRouteForController(request.rejectPatch, {
+      method: 'PATCH',
+      path: '/request/{id}/reject',
+    }),
+    createRouteForController(request.cancelDelete, {
+      method: 'DELETE',
+      path: '/request/{id}',
+    }),
+    createRouteForController(request.donePatch, {
+      method: 'PATCH',
+      path: '/request/{id}',
     }),
   ];
 };

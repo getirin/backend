@@ -127,7 +127,7 @@ const scoreCalculationQueryGenerator = createScoreCalculationQueryGenerator(sort
  * @return {Promise<Aggregate>}
  */
 orderMarketMatchSchema.statics.findMatchesWithRadius = async function(location, maxDistance, order = sorting.order){
-  const locationCloseMarkets = Market.nearbyOfLocation(location, maxDistance);
+  const locationCloseMarkets = await Market.nearbyOfLocation(location, maxDistance);
   // Define how to handle sorting fields, if they are convertible to percentages
   // just divide them with the given constant, otherwise we need to use branching to group the values into some
   // factors. For example distance and closeMarketCount are convertible to percentages so we just do so.
@@ -145,7 +145,7 @@ orderMarketMatchSchema.statics.findMatchesWithRadius = async function(location, 
     {
       $project: {
         // Create a field that holds how many of the user's close markets collide with orders
-        marketIntersection: { $size: { $setIntersection: ['$closeMarkets', locationCloseMarkets] } },
+        marketIntersection: { $size: { $setIntersection: ['$closeMarkets', locationCloseMarkets.map(m => m._id)] } },
         // Create a field that holds how many milliseconds it passed since the order was created.
         timePassedMs: { $subtract: [ new Date(), '$createdAt' ] },
         order: 1,

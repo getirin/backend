@@ -119,8 +119,10 @@ module.exports = ({ log }) => {
       handler: async function({ auth: { credentials: { userType } }, payload: { location, maxDistance } }){
         if(userType !== userTypes.CARRIER) return Boom.badRequest(errorCodes.onlyCarrierCanFindMatches);
         const mongoLocation = objectToMongo(location);
+        log.info({ location, maxDistance }, 'Querying orders in radius.');
         const orders = await OrderMarketMatch.findMatchesWithRadius(mongoLocation, maxDistance);
 
+        log.info({ location, maxDistance, resultSize: orders.length }, 'Returning radius match results.');
         return orders.map(mapOrderForOutput);
       }
     }
