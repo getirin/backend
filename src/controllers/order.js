@@ -13,7 +13,7 @@ const OrderMarketMatch = require('../models/OrderMarketMatch');
 const CarrierRequest = require('../models/CarrierRequest');
 
 function mapOrderForOutput(payload){
-  const { title, totalPrice, address, status, createdAt, updatedAt } = payload;
+  const { title, totalPrice, address, status, createdAt, carrier, updatedAt } = payload;
   return {
     title,
     totalPrice,
@@ -21,6 +21,7 @@ function mapOrderForOutput(payload){
     status,
     createdAt,
     updatedAt,
+    carrier,
     destination: mongoToObject(payload.destination),
     id: payload._id.toString(),
     items: payload.items.map(item => ({count: item.count, product: item.product.toString()})),

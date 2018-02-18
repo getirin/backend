@@ -9,7 +9,8 @@ const orderListingSchema = Joi.array().items(
     id: Joi.string().required(),
     totalPrice: Joi.number().required(),
     createdAt: Joi.date().timestamp(),
-    updatedAt: Joi.date().timestamp()
+    updatedAt: Joi.date().timestamp(),
+    carrier: Joi.object().keys({ name: Joi.string().required() }).optional()
   }).optional()
 ).optional();
 
