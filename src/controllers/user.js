@@ -5,7 +5,7 @@ const User = require('../models/User');
 const userAndJwtCreator = require('./common/userAndJwtCreator');
 const { objectToMongo } = require('./common/convertLatLngToMongoArray');
 
-module.exports = ({ log, jwt }) => {
+module.exports = ({ log, jwt, events }) => {
   return {
     loginPost: {
       config: {
@@ -23,9 +23,10 @@ module.exports = ({ log, jwt }) => {
         auth: 'jwt',
       },
       handler: async function({ auth, payload: { location } }){
-        const { id } = auth.credentials;
+        const { id, name } = auth.credentials;
         const result = await User.findByIdAndUpdate(id, { $set: { lastSeen: objectToMongo(location) } });
 
+        events.locationChange(id, location, { id, name });
         return { success: true, id, createdAt: result.createdAt };
       }
     }

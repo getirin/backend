@@ -28,7 +28,7 @@ function mapOrderForOutput(payload){
   };
 }
 
-module.exports = ({ log }) => {
+module.exports = ({ log, events }) => {
   return {
     indexPut: {
       config: {
@@ -52,6 +52,7 @@ module.exports = ({ log }) => {
           'Created order market match for our new order'
         );
 
+        events.orderCreated(order.id, user);
         return mapInsertForPutOutput(order);
       }
     },

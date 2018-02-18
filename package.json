@@ -34,6 +34,7 @@
     "mongoose": "^5.0.6",
     "mongoose-bcrypt": "^1.5.0",
     "pino": "^4.10.4",
+    "redis": "^2.8.0",
     "vision": "^5.3.1"
   },
   "devDependencies": {

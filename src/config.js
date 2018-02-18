@@ -28,6 +28,11 @@ module.exports = {
       connectionString: process.env.TEST_MONGODB_CONNECTION_STRING || 'mongodb://localhost/getirin-test'
     }
   },
+  events: {
+    channel: 'events',
+    host: process.env.REDIS_HOST || 'localhost',
+    port: process.env.REDIS_PORT || 6379,
+  },
   application: {
     orderMatch: {
       // The radius that determines which markets can supply a specific order

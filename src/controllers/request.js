@@ -12,7 +12,7 @@ const targets = {
   SEND: 4,
 };
 
-module.exports = ({ log }) => {
+module.exports = ({ log, events }) => {
   const errorCodes = {
     customerCanNotSendCarrierRequest: 'customer_can_not_send_carrier_request',
     youAlreadyRequestedThisOrder: 'you_already_requested_this_order',
@@ -22,7 +22,7 @@ module.exports = ({ log }) => {
     canNotChangeToSameStatus: 'can_not_change_to_same_status'
   };
 
-  async function manageSendState(target, { order }, { id, userType }, childLog){
+  async function manageSendState(target, { order }, { id, name, userType }, childLog){
     childLog.info('Got send carrier request.');
     // check for invalid situations.
     if(userType !== userTypes.CARRIER) return Boom.badRequest(errorCodes.customerCanNotSendCarrierRequest);
@@ -40,7 +40,7 @@ module.exports = ({ log }) => {
       updates
     }).save();
 
-    // TODO: emit request sent to websocket
+    events.carrierRequest(order._id.toString(), cr._id.toString(), { name, id });
     return { success: true, id: cr.id, createdAt: new Date().getTime() };
   }
 
@@ -57,7 +57,8 @@ module.exports = ({ log }) => {
     await CarrierRequest.findByIdAndUpdate(request._id, { $set: { status: request.status }});
     request.order.status = orderStatuses.OBTAINED;
     await request.order.save();
-    // TODO: emit accepted status to websocket
+
+    events.orderAccepted(request.order._id.toString(), request.carrier);
     return { success: true };
   }
 
@@ -113,7 +114,8 @@ module.exports = ({ log }) => {
     await CarrierRequest.findByIdAndUpdate(request._id, { $set: { status: request.status }});
     request.order.status = orderStatuses.FINISHED;
     await request.order.save();
-    // TODO: emit event done to websocket
+
+    events.orderFinished(request.order._id.toString());
     return { success: true };
   }
 
@@ -130,7 +132,7 @@ module.exports = ({ log }) => {
   }
 
   function handlerCreator(target){
-    return async function handler({ auth: { credentials: { id, userType } }, params, payload }){
+    return async function handler({ auth: { credentials: { id, name, userType } }, params, payload }){
       const entities = {
         order: null,
         request: null
@@ -153,7 +155,7 @@ module.exports = ({ log }) => {
 
       // GET order
       // GET request if you can
-      return manageRequestState(target, entities, { id, userType }, childLog);
+      return manageRequestState(target, entities, { id, userType, name }, childLog);
     };
   }
 
