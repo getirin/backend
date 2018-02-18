@@ -80,7 +80,7 @@ module.exports = ({ controllers, routeDefinitionOverrides = {}, routeConfigOverr
     }),
     createRouteForController(request.donePatch, {
       method: 'PATCH',
-      path: '/request/{id}',
+      path: '/request/{id}/done',
     }),
   ];
 };
