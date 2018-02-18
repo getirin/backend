@@ -13,6 +13,8 @@ module.exports = {
   customerLoginFail: 'user_login_fail',
   carrierLoginFail: 'carrier_login_fail',
   couldNotCreateProduct: 'could_not_create_product',
+  // order posting
+  onlyCustomersCanPostOrders: 'only_customers_can_post_order',
   // order canceling
   onlyCustomersCanCancelOrders: 'only_customers_can_cancel_orders',
   orderAlreadyCancelled: 'order_already_cancelled',

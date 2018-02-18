@@ -37,7 +37,8 @@ module.exports = ({ log }) => {
         auth: 'jwt'
       },
       handler: async function({ auth, payload }){
-        const { id: user } = auth.credentials;
+        const { id: user, userType } = auth.credentials;
+        if(userType !== userTypes.CUSTOMER) return Boom.unauthorized(errorCodes.onlyCustomersCanPostOrders);
         const totalPrice = await Product.calculateTotalPriceOfProducts(payload.items.map(item => item.product));
         const order = await new Order({ ...payload, totalPrice, destination: objectToMongo(payload.destination), user }).save();
         log.info({ insertId: order._id, destination: payload.destination }, 'Inserted order without any problems, trying to calculate the nearest markets.');
